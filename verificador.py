@@ -8,9 +8,9 @@ start_time = time.time()
 with open(filename, "r") as archivo1, open(decompressed_filename, "r") as archivo2:
     for linea1, linea2 in zip(archivo1, archivo2):
         if linea1 != linea2:
-            print("Los archivos no son idénticos")
+            print("nok")
             break
     else:
-        print("Los archivos son idénticos")
+        print("ok")
 
 print("Tiempo de ejecución:", time.time() - start_time)
