@@ -24,19 +24,20 @@ def huffman_decompress(encoded_array, root):
     decoded_text = decode_text(encoded_text, root)
     return decoded_text
 
-compressed_filename = "comprimido.elmejorprofesor"
-decompressed_filename = "descomprimido-elmejorprofesor.txt"
-start_time = time.time()
+if __name__ == "__main__":
+    compressed_filename = "comprimido.elmejorprofesor"
+    decompressed_filename = "descomprimido-elmejorprofesor.txt"
+    start_time = time.time()
 
-# Cargar la codificación Huffman y el texto comprimido desde los archivos
-data = np.load(compressed_filename, allow_pickle=True)
-with open(compressed_filename, 'rb') as f:
-    compressed = np.load(f, allow_pickle=True)
-    root = HuffmanNode.from_array(np.load(f, allow_pickle=True))
+    # Cargar la codificación Huffman y el texto comprimido desde los archivos
+    with open(compressed_filename, 'rb') as f:
+        compressed = bin(int.from_bytes(np.load(f, allow_pickle=True), byteorder='big'))[2:]
+        root = HuffmanNode.from_array(np.load(f, allow_pickle=True))
 
-# Descomprimir el texto
-decoded_text = huffman_decompress(compressed, root)
-with open(decompressed_filename, 'w') as f:
-    f.write(decoded_text)
+    # Descomprimir el texto
+    decoded_text = huffman_decompress(compressed, root)
+    with open(decompressed_filename, 'w') as f:
+        f.write(decoded_text)
 
-print("Tiempo de ejecución:", time.time() - start_time)
+    end_time = time.time()
+    print(f"Decompression time: {end_time - start_time:.2f} seconds")
