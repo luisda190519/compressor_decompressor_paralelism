@@ -13,7 +13,7 @@ def decode_text(encoded_text, root):
             node = node.right
 
         if node.char is not None:
-            decoded_text += chr(node.char)
+            decoded_text += node.char
             node = root
 
     return decoded_text
@@ -33,12 +33,13 @@ if __name__ == "__main__":
         compressed = bin(int.from_bytes(np.load(f, allow_pickle=True), byteorder='big'))[2:]
         root = HuffmanNode.from_array(np.load(f, allow_pickle=True))
         file_format = np.load(f, allow_pickle=True).tobytes().decode()
+        ENCODING = np.load(f, allow_pickle=True).tobytes().decode()
 
     # Descomprimir el texto
     decoded_text = huffman_decompress(compressed, root)
     decompressed_filename = "descomprimido-elmejorprofesor.{}".format(file_format)
-    with open(decompressed_filename, 'wb') as f:
-        f.write(decoded_text.encode('utf-16'))
+    with open(decompressed_filename, 'w', encoding=ENCODING) as f:
+        f.write(decoded_text)
 
     end_time = time.time()
     print(f"Decompression time: {end_time - start_time:.2f} seconds")

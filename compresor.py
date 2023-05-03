@@ -44,12 +44,15 @@ def build_codeword_table(root):
 
 def huffman_compress(text):
     freq_dict = build_frequency_table(text)
-    print(freq_dict)
     root = build_huffman_tree(freq_dict)
     codeword_dict = build_codeword_table(root)
     encoded_text = "".join(codeword_dict[byte] for byte in text)
-    tam = math.ceil(len(encoded_text) / 8)
-    encoded_text_bytes = int(encoded_text, 2).to_bytes(tam, byteorder="big")
+    tam = len(encoded_text) // 8
+    try:
+      encoded_text_bytes = int(encoded_text, 2).to_bytes(tam, byteorder="big")
+    except:
+      tam = math.ceil(len(encoded_text) / 8)
+      encoded_text_bytes = int(encoded_text, 2).to_bytes(tam, byteorder="big")
     # Convert the encoded text to a NumPy array of integers for efficient storage
     return encoded_text_bytes, root
 
@@ -59,8 +62,14 @@ if __name__ == "__main__":
     compressed_filename = "comprimido.elmejorprofesor"
 
     # Abrimos el archivo de texto
-    with open(filename, 'rb') as f:
-        text = f.read()
+    try:
+      ENCODING = 'utf-8'
+      with open(filename, 'r', encoding=ENCODING) as f:
+          text = f.read()
+    except:
+      ENCODING = 'cp1252'
+      with open(filename, 'r', encoding=ENCODING) as f:
+          text = f.read()
 
     # Comprimir el texto
     compressed, root = huffman_compress(text)
@@ -71,6 +80,8 @@ if __name__ == "__main__":
         np.save(f, root.to_array())
         file_format = filename.split('.')[1]
         np.save(f, file_format.encode())
+        np.save(f, ENCODING.encode())
+      
 
     end_time = time.time()
     print(f"Compression time: {end_time - start_time:.2f} seconds")
