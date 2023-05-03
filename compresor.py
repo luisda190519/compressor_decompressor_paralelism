@@ -2,6 +2,7 @@ from huffman import HuffmanNode
 import numpy as np
 import time
 import sys
+import math
 import heapq
 
 def build_frequency_table(text):
@@ -38,6 +39,7 @@ def build_codeword_table(root):
         else:
             stack.append((node.left, code + "0"))
             stack.append((node.right, code + "1"))
+
     return codes
 
 def huffman_compress(text):
@@ -45,14 +47,15 @@ def huffman_compress(text):
     root = build_huffman_tree(freq_dict)
     codeword_dict = build_codeword_table(root)
     encoded_text = "".join(codeword_dict[byte] for byte in text)
-    encoded_text_bytes = int(encoded_text, 2).to_bytes(len(encoded_text) // 8, byteorder="big")
+    tam = math.ceil(len(encoded_text) / 8)
+    encoded_text_bytes = int(encoded_text, 2).to_bytes(tam, byteorder="big")
     # Convert the encoded text to a NumPy array of integers for efficient storage
     return encoded_text_bytes, root
 
 if __name__ == "__main__":
+    start_time = time.time()
     filename = sys.argv[1]
     compressed_filename = "comprimido.elmejorprofesor"
-    start_time = time.time()
 
     # Abrimos el archivo de texto
     with open(filename, 'r') as f:
@@ -65,6 +68,8 @@ if __name__ == "__main__":
     with open(compressed_filename, 'wb') as f:
         np.save(f, compressed)
         np.save(f, root.to_array())
+        file_format = filename.split('.')[1]
+        np.save(f, file_format.encode())
 
     end_time = time.time()
     print(f"Compression time: {end_time - start_time:.2f} seconds")
