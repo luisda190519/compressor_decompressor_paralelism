@@ -1,8 +1,16 @@
 import sys
+import os
 
 if __name__ == "__main__":
     filename = sys.argv[1]
     decompressed_filename = "descomprimido-elmejorprofesor.txt"
+
+    original_size = os.path.getsize(filename)
+    compressed_size = os.path.getsize(decompressed_filename)
+    compression_rate = compressed_size / original_size
+    print(f"Original size: {original_size} bytes")
+    print(f"Compressed size: {compressed_size} bytes")
+    print(f"Compression rate: {compression_rate:.2f}")
 
     try:
       ENCODING = 'utf-8'
