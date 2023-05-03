@@ -44,6 +44,7 @@ def build_codeword_table(root):
 
 def huffman_compress(text):
     freq_dict = build_frequency_table(text)
+    print(freq_dict)
     root = build_huffman_tree(freq_dict)
     codeword_dict = build_codeword_table(root)
     encoded_text = "".join(codeword_dict[byte] for byte in text)
@@ -58,7 +59,7 @@ if __name__ == "__main__":
     compressed_filename = "comprimido.elmejorprofesor"
 
     # Abrimos el archivo de texto
-    with open(filename, 'r') as f:
+    with open(filename, 'rb') as f:
         text = f.read()
 
     # Comprimir el texto
