@@ -9,7 +9,7 @@ def decode_text(encoded_text, root):
     node = root
 
     for bit in encoded_text:
-        if bit == '0':
+        if bit == "0":
             node = node.left
         else:
             node = node.right
@@ -20,9 +20,7 @@ def decode_text(encoded_text, root):
 
     return decoded_text
 
-def huffman_decompress(encoded_array, root):
-    # Convert the NumPy array back to a string of bits
-    encoded_text = ''.join([str(bit) for bit in encoded_array])
+def huffman_decompress(encoded_text, root):
     decoded_text = decode_text(encoded_text, root)
     return decoded_text
 
