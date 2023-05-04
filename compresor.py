@@ -78,7 +78,7 @@ if __name__ == "__main__":
     with open(compressed_filename, 'wb') as f:
         np.save(f, compressed)
         np.save(f, root.to_array())
-        file_format = filename.split('.')[1]
+        file_format = filename.split('.')[-1]
         np.save(f, file_format.encode())
         np.save(f, ENCODING.encode())
       
