@@ -1,9 +1,0 @@
-Compression time: 1.75 seconds
-Decompression time: 10.53 seconds
-Original size: 4217909 bytes
-Compressed size: 4217909 bytes
-Compression rate: 1.00
-ok
-Original size 4217909 compressed 2385348 decompressed 4217909 
-compression rate .... 
-Sized diff between original and decompressed 0  
