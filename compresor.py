@@ -62,14 +62,14 @@ if __name__ == "__main__":
     compressed_filename = "comprimido.elmejorprofesor"
 
     # Abrimos el archivo de texto
+    with open(filename, 'rb') as f:
+          text = f.read()
     try:
-      ENCODING = 'utf-8'
-      with open(filename, 'r', encoding=ENCODING) as f:
-          text = f.read()
-    except:
       ENCODING = 'cp1252'
-      with open(filename, 'r', encoding=ENCODING) as f:
-          text = f.read()
+      text = text.decode(ENCODING)
+    except:
+      ENCODING = 'utf-8'
+      text = text.decode(ENCODING)
 
     # Comprimir el texto
     compressed, root = huffman_compress(text)
