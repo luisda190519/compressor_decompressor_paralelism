@@ -1,3 +1,4 @@
+from collections import Counter
 from huffman import HuffmanNode
 import numpy as np
 import time
@@ -6,13 +7,8 @@ import math
 import heapq
 
 def build_frequency_table(text):
-    freq_dict = {}
-    for char in text:
-        if char in freq_dict:
-            freq_dict[char] += 1
-        else:
-            freq_dict[char] = 1
-    return freq_dict
+	freq_dict = Counter(text)
+	return freq_dict
 
 def build_huffman_tree(freq_dict):
     heap = []
@@ -84,4 +80,4 @@ if __name__ == "__main__":
       
 
     end_time = time.time()
-    print(f"Compression time: {end_time - start_time:.2f} seconds")
+    print(f"{end_time - start_time:.2f}")
