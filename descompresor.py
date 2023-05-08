@@ -1,7 +1,7 @@
 from huffman import HuffmanNode
 import numpy as np
 import time
-import pickle
+import sys
 
 
 def decode_text(encoded_text, root):
@@ -28,29 +28,18 @@ if __name__ == "__main__":
     start_time = time.time()
 
     # Load Huffman encoding and compressed text from file
-    compressed_filename = "comprimido.elmejorprofesor"
-    try:
-        with open(compressed_filename, 'rb') as f:
-            compressed = bin(int.from_bytes(np.load(f, allow_pickle=True), byteorder='big'))[2:]
-            root = HuffmanNode.from_array(np.load(f, allow_pickle=True))
-            file_format = np.load(f, allow_pickle=True).tobytes().decode()
-            ENCODING = np.load(f, allow_pickle=True).tobytes().decode()
-    except (FileNotFoundError, IOError):
-        print(f"Error reading compressed file: {compressed_filename}")
-        exit(1)
-    except (EOFError, pickle.UnpicklingError):
-        print(f"Error unpickling data in file: {compressed_filename}")
-        exit(1)
+    compressed_filename = sys.argv[1]
+    with open(compressed_filename, 'rb') as f:
+        compressed = bin(int.from_bytes(np.load(f, allow_pickle=True), byteorder='big'))[2:]
+        root = HuffmanNode.from_array(np.load(f, allow_pickle=True))
+        file_format = np.load(f, allow_pickle=True).tobytes().decode()
+        ENCODING = np.load(f, allow_pickle=True).tobytes().decode()
 
     # Decompress the text
     decoded_text = huffman_decompress(compressed, root)
     decompressed_filename = f"descomprimido-elmejorprofesor.{file_format}"
-    try:
-        with open(decompressed_filename, 'wb') as f:
-            f.write(decoded_text.encode(ENCODING))
-    except IOError:
-        print(f"Error writing decompressed file: {decompressed_filename}")
-        exit(1)
+    with open(decompressed_filename, 'wb') as f:
+        f.write(decoded_text.encode(ENCODING))
 
     end_time = time.time()
-    print(f"Decompression time: {end_time - start_time:.2f} seconds")
+    print(f"{end_time - start_time:.2f}")
